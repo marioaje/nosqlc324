@@ -41,6 +41,85 @@ app.get('/clientes', (req, res) =>{
         res.json(clienyts);
 }); 
 
+//2-obtener por id
+app.get('/clientes/:id', (req, res) =>{
+    const id = parseInt(req.params.id);
+    const clienteBusqueda = clienyts.find(c => c.id === id);
+
+    if(clienteBusqueda){
+        res.json(clienteBusqueda);
+    }
+    
+    res.status(404).json({message:"El cliente no esta"});
+    
+}); 
+
+//3-crear datos, post
+app.post('/clientes', (req, res) =>{
+    
+    const nuevoCliente =
+    {
+        id: clienyts.length + 1,
+        nombre: req.body.nombre,
+    };
+
+    clienyts.push(nuevoCliente);
+    res.status(201).json(nuevoCliente);
+
+
+
+//    res.json(clienyts);
+}); 
+
+//4-put o actualizar
+app.put('/clientes/:id', (req, res) =>{
+    
+
+    const _id = parseInt(req.params.id);
+
+    const clienteBusqueda = clienyts.find(c => c.id === _id);
+
+    if(!clienteBusqueda){
+        res.status(404).json({message:"El cliente no esta"});
+    }
+    else{
+        //clienteBusqueda.id = _id;
+        clienteBusqueda.nombre = req.body.nombre
+        res.json(clienteBusqueda);
+    }
+//Esto servira para NoSQL
+    // const nuevoCliente =
+    // {
+        
+    //     id: _id,
+    //     nombre: req.body.nombre,
+    // };
+
+    
+    res.status(201).json(nuevoCliente);
+
+
+
+//    res.json(clienyts);
+}); 
+
+
+//5-eliminar datos delete
+app.delete('/clientes/:id', (req, res) =>{
+    const id = parseInt(req.params.id);
+    const clienteBusqueda = clienyts.findIndex(c => c.id === id);
+
+    if(clienteBusqueda){
+        const clienteEliminado = clienyts.splice(clienteBusqueda, 1 );
+        res.json(clienteEliminado);
+    }
+    
+    res.status(404).json({message:"El cliente no esta"});
+    
+}); 
+
+
+
 //Un test del api...
 //Inicialicio el proyecto
 app.listen(port,
