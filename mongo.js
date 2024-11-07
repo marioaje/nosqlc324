@@ -45,6 +45,70 @@ console.log("Fin Mongo Nube");
 
 
 
+//Podemos crear un esquema o entidad de datos
+const SchemaUsuarios = new mongoose.Schema(
+    {
+        id: Number,
+        nombre: String,
+        direccion: String,
+        Correo: String,
+        Telefono: String
+    }
+);
+
+
+const Usuarios = mongoose.model('Usuarios', SchemaUsuarios  );
+
+
+///obtener todos los datos desde una coleccion o table
+app.get('/Usuarios', async (req, res) =>{
+    try{
+        const schemaDatosColeccion = await Usuarios.find();
+        res.json(schemaDatosColeccion);
+    }catch(err){
+        res.status(500).json({message:"Error al obtener los datos " + error.message});
+
+    }
+    
+    
+    
+}); 
+
+
+
+//3-crear datos, post
+app.post('/Usuarios', async (req, res) =>{
+    
+    const {                   
+                id,
+                nombre,
+                direccion,
+                Correo,
+                Telefono
+            } = req.body;
+
+                //asigno los elementos Usuarios
+
+    const nuevoDato  = new Usuarios({                   
+        id,
+        nombre,
+        direccion,
+        Correo,
+        Telefono
+    }) ;     
+    
+    try{
+        const datoGuardado = await nuevoDato.save();
+        res.status(201).json(datoGuardado);
+    }catch(error){
+        res.status(500).json({message:"Error al crear los datos " + error.message});
+        
+    }
+
+    
+}); 
+
+
 //Un test del api...
 //Inicialicio el proyecto
 app.listen(port,
