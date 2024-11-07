@@ -21,13 +21,28 @@ app.use(express.json());
 
 const ulrMongo = 'mongodb://localhost:27017/miapi';
 
-//Creamos la conexion hacia la BD mongo
-mongoose.connect(ulrMongo,{
+// //Creamos la conexion hacia la BD mongo
+// console.log("Inicia Mongo");
+// mongoose.connect(ulrMongo,{
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// }).
+// then(() => console.log('Base de datos alive...'))
+// .catch((error) => console.log('Error: ' + error));
+// console.log("Fin Mongo");
+
+
+console.log("Inicia Mongo Nube");
+const urlNube = "mongodb+srv://marioaje:tADNkbcVvRamXWe1@clusteragenciaaks.41etj.mongodb.net/agenciaaks?retryWrites=true&w=majority";
+//Creamos la conexion hacia la BD mongonube
+mongoose.connect(urlNube,{
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).
-then(() => console.log('Base de datos alive...'))
+then(() => console.log('Base de datos en la nube alive...'))
 .catch((error) => console.log('Error: ' + error));
+console.log("Fin Mongo Nube");
+
 
 
 //Un test del api...
