@@ -70,10 +70,51 @@ app.get('/Usuarios', async (req, res) =>{
 
     }
     
-    
-    
 }); 
 
+
+
+//2-attualza datos, post
+app.put('/Usuarios/:id', async (req, res) =>{
+    
+
+    try{
+        const {            
+            id,                 
+            nombre,
+            direccion,
+            Correo,
+            Telefono
+        } = req.body;
+
+
+        const datoModificado = await Usuarios.findOneAndUpdate        
+        (
+            {
+                id: req.params.id,
+            },
+            {                   
+                nombre,
+                direccion,
+                Correo,
+                Telefono
+            },
+            {
+                new: true
+            } 
+
+        );
+        
+        if (!datoModificado){
+            return res.status(404).json({message: "Not Found"} );    
+        }
+        res.status(200).json(datoModificado);
+    }catch(error){
+        res.status(500).json({message:"Error al actualizar los datos " + error.message});
+        
+    }
+
+});
 
 
 //3-crear datos, post
@@ -107,6 +148,23 @@ app.post('/Usuarios', async (req, res) =>{
 
     
 }); 
+
+
+
+//Eliminar
+
+app.delete('/Usuarios/:id', async (req, res) =>{
+    try{
+        const usuarioEliminado = await Usuarios.findOneAndDelete({id:req.params.id}); 
+
+        if (!usuarioEliminado){
+            return res.status(404).json({message: "Not Found"} );   
+        }
+        res.status(200).json("Ususario eliminado");
+    }catch(error){
+        res.status(500).json({message:"Error al borrar los datos " + error.message});
+    }
+});
 
 
 //Un test del api...
